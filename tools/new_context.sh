@@ -1,0 +1,12 @@
+cp template.cpp ../contest/A.cpp
+cp template.cpp ../contest/B.cpp
+cp template.cpp ../contest/C.cpp
+cp template.cpp ../contest/D.cpp
+cp template.cpp ../contest/E.cpp
+cp template.cpp ../contest/F.cpp
+cp template.cpp ../contest/G.cpp
+cp template.cpp ../contest/H.cpp
+cp template.cpp ../contest/I.cpp
+cp template.cpp ../contest/J.cpp
+cp template.cpp ../contest/K.cpp
+cp template.cpp ../contest/L.cpp

@@ -1,0 +1,17 @@
+cmake_minimum_required(VERSION 3.15)
+project(MyApp)
+
+set(CMAKE_CXX_STANDARD 17)
+
+add_executable(A contest/A.cpp)
+add_executable(B contest/B.cpp)
+add_executable(C contest/C.cpp)
+add_executable(D contest/D.cpp)
+add_executable(E contest/E.cpp)
+add_executable(F contest/F.cpp)
+add_executable(G contest/G.cpp)
+add_executable(H contest/H.cpp)
+add_executable(I contest/I.cpp)
+add_executable(J contest/J.cpp)
+add_executable(K contest/K.cpp)
+add_executable(L contest/L.cpp)
