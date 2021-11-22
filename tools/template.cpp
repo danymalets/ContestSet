@@ -10,7 +10,7 @@ typedef long double ld;
 #define fast_io ios_base::sync_with_stdio(0),cin.tie(0),cout.tie(0)
 #define erun(x) (x).erase(unique(all(x)),(x).end())
 #define sp(x) setprecision(x) << fixed
-#define spp(x) cout << setprecision(x) << fixed
+#define setp(x) cout << setprecision(x) << fixed
 #define all(x) (x).begin(),(x).end()
 #define dcl(x,y) ((x)%(y)?(x)/(y)+1:(x)/(y))
 #define cube(x) ((x)*(x)*(x))
@@ -22,6 +22,7 @@ typedef long double ld;
 #define fi first
 #define se second
 #define endl '\n'
+#define tests int _t; cin >> _t; while (_t--)
 #define file_all file_in,file_out
 #define file_in freopen("input.txt","rt",stdin)
 #define file_out freopen("output.txt","wt",stdout)
@@ -78,6 +79,13 @@ const int N = 2e5;
 int main() {
     fast_io;
 
+    tests{
+        int
+
+        cin >>
+
+
+    };
 
     return 0;
 }
