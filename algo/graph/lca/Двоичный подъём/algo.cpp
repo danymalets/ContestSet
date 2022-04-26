@@ -17,6 +17,10 @@ void dfs(int v,int par=-1){
     }
 }
 
+class AAA{
+
+};
+
 void up(int &v,int len){
     for (int i=L-1; i>=0; i--){
         if ((1<<i)<=len){

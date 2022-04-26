@@ -1,6 +1,5 @@
 #pragma region TEMPLATE
 
-
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -23,25 +22,10 @@ typedef long double ld;
 #define fi first
 #define se second
 #define endl '\n'
-#define tests int _t; cin >> _t; while (_t--)
 #define file_all file_in,file_out
 #define file_in freopen("input.txt","rt",stdin)
 #define file_out freopen("output.txt","wt",stdout)
 #define print_time() cerr << sp(2) << "\nTime execute: " << clock() / (double)CLOCKS_PER_SEC << " sec\n";
-
-vector<string> split(string s, string t){
-    vector<string> ans;
-    auto start = 0U;
-    auto end = s.find(t);
-    while (end != string::npos)
-    {
-        ans.pb(s.substr(start, end - start));
-        start = end + t.length();
-        end = s.find(t, start);
-    }
-    ans.pb(s.substr(start, end));
-    return ans;
-}
 
 int gcd(int x, int y){ return __gcd(x, y); }
 int gcd(ll x, ll y){ return __gcd(x, y); }
@@ -50,11 +34,25 @@ ll lcm(int x, int y){ return 1LL * x * y / gcd(x, y); }
 ld root(ld n, ld x){ return pow(x, 1 / n); }
 ld log(ld n, ld x){ return log(x) / log(n); }
 int pow2(int n){ return (1 << n); }
-ll pow2l(int n){ return (1LL << n); }
+ll pow2ll(int n){ return (1LL << n); }
 bool is_pow2(int x){ return !(x&(x-1)); }
 bool is_pow2(ll x){ return !(x&(x-1)); }
 bool is_sqr(int x){ int t = sqrt(x); return t * t == x; }
 bool is_sqr(ll x){ int t = sqrt(x); return 1LL * t * t == x; }
+
+int bin_pow(int x, int n, int mod){
+    if (n == 0) return 1 % mod;
+    if (n % 2 == 1) return 1LL * bin_pow(x, n - 1, mod) * x % mod;
+    int t = bin_pow(x, n / 2, mod);
+    return t * t % mod;
+}
+
+int bin_pow(int x, ll n, int mod){
+    if (n == 0) return 1 % mod;
+    if (n % 2 == 1) return 1LL * bin_pow(x, n - 1, mod) * x % mod;
+    int t = bin_pow(x, n / 2, mod);
+    return t * t % mod;
+}
 
 void print() { }
 template<typename First, typename... Strings> void print(First arg, const Strings&... rest) { cout << arg << " "; print(rest...); }
@@ -72,62 +70,70 @@ template<typename T> void printaln(T a[], int n) { printaln(a, 0, n); }
 const ll LLINF = 8e18;
 const int INF = 2e9;
 
-const int MOD = 1e9+7;
 const int M = 1000;
 const int N = 2e5;
 
-int n;
-int a[10], k[10];
-vector<vector<int>> v;
-vector<int> t;
+const ld EPS = 1e-10;
 
-void rec(int i = 0){
-    for (int j = 0; j < a[i]; j++){
-        int val = (k[i] + j) % a[i];
-        k[j] = val;
-        rec(i+1);
+
+const int MOD = 1e9+7;
+const int MAX_FACTS = 1e6;
+int facts[MAX_FACTS + 1];
+
+struct moder{
+    int v;
+
+    moder() {}
+    moder(int v) : v(v) {}
+
+    friend istream& operator>>(istream &stream, moder &s) { return stream >> s.v; }
+    friend ostream& operator<<(ostream &stream, const moder &s) { return stream << s.v; }
+
+    moder operator+(const moder &m) const { return moder((v + m.v) % MOD); }
+    moder operator-(const moder &m) const { return moder((v - m.v + MOD) % MOD); }
+    moder operator*(const moder &m) const { return moder(1LL * v * m.v % MOD); }
+    moder operator/(const moder &m) const { return (*this) * m.reverse(); }
+
+//    friend moder operator+(moder a, moder const& b){
+//        return a.v + b.v;
+//    }
+
+    moder reverse() const { return bin_pow(*this, MOD-2); }
+
+    void operator+=(const moder &m) { *this = *this + m; }
+    void operator-=(const moder &m) { *this = *this - m; }
+    void operator*=(const moder &m) { *this = *this * m; }
+    void operator/=(const moder &m) { *this = *this / m; }
+
+    friend moder bin_pow(moder m, ll n){
+        if (n == 0) return get(1);
+        if (n % 2 == 1) return bin_pow(m, n - 1) * m;
+        moder t = bin_pow(m, n / 2);
+        return t * t;
     }
-    if (i == n){
-        v.pb(t);
+
+    static moder get(ll v) { return moder((v % MOD + MOD) % MOD); }
+    static moder get(int v) { return moder((v % MOD + MOD) % MOD); }
+};
+
+void init_facts(){
+    facts[0] = 1;
+    for (int i = 1; i <= MAX_FACTS; i++){
+        facts[i] = 1LL * facts[i-1] * i % MOD;
     }
 }
+moder fact(int n) { return facts[n]; }
+moder C(int n, int k){ return fact(n) / (fact(k) * fact(n-k)); }
+moder A(int n, int k){ return fact(n) / fact(k); }
+moder Cs(int n, int k){ return C(n+k-1, k); }
 
-pair<int, char> get(vector<int> a, vector<int> b){
-    for (int i = 0; i < a.size(); i++){
-        if (a[i] + 1 == b[i])
-            return {i,'+'};
-        if (a[i] - 1 == b[i])
-            return {i,'-'};
-    }
-    print("bad");
-    return {0,'?'};
-}
 
 int main() {
-    fast_io;
+    fast_io; setp(8);
 
-    cin >> n;
-
-
-    for (int i = 0; i < n; i++){
-        cin >> a[i];
-        t.pb(0);
-    }
-
-    for (int i = 0; i < n; i++){
-        int tmp;
-        cin >> tmp;
-        tmp--;
-        t.pb(tmp);
-    }
-
-    rec();
-    v.pb(v[0]);
-    for (int i = 0; i < v.size() - 1; i++){
-        auto tmp = get(v[i], v[i+1]);
-        cout << tmp.first + 1 << tmp.second << endl;
-    }
-
+    moder a = 4;
+    cout << 6 + a;
+    cout << a + 6;
 
     return 0;
 }

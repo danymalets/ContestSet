@@ -1,6 +1,6 @@
 #pragma region TEMPLATE
 
-#include <bits/stdc++.h>
+z
 using namespace std;
 
 typedef long long ll;
@@ -28,6 +28,20 @@ typedef long double ld;
 #define file_out freopen("output.txt","wt",stdout)
 #define print_time() cerr << sp(2) << "\nTime execute: " << clock() / (double)CLOCKS_PER_SEC << " sec\n";
 
+vector<string> split(string s, string t){
+    vector<string> ans;
+    auto start = 0U;
+    auto end = s.find(t);
+    while (end != string::npos)
+    {
+        ans.pb(s.substr(start, end - start));
+        start = end + t.length();
+        end = s.find(t, start);
+    }
+    ans.pb(s.substr(start, end));
+    return ans;
+}
+
 int gcd(int x, int y){ return __gcd(x, y); }
 int gcd(ll x, ll y){ return __gcd(x, y); }
 ll lcm(int x, int y){ return 1LL * x * y / gcd(x, y); }
@@ -35,25 +49,11 @@ ll lcm(int x, int y){ return 1LL * x * y / gcd(x, y); }
 ld root(ld n, ld x){ return pow(x, 1 / n); }
 ld log(ld n, ld x){ return log(x) / log(n); }
 int pow2(int n){ return (1 << n); }
-ll pow2ll(int n){ return (1LL << n); }
+ll pow2l(int n){ return (1LL << n); }
 bool is_pow2(int x){ return !(x&(x-1)); }
 bool is_pow2(ll x){ return !(x&(x-1)); }
 bool is_sqr(int x){ int t = sqrt(x); return t * t == x; }
 bool is_sqr(ll x){ int t = sqrt(x); return 1LL * t * t == x; }
-
-int bin_pow(int x, int n, int mod){
-    if (n == 0) return 1 % mod;
-    if (n % 2 == 1) return 1LL * bin_pow(x, n - 1, mod) * x % mod;
-    int t = bin_pow(x, n / 2, mod);
-    return t * t % mod;
-}
-
-int bin_pow(int x, ll n, int mod){
-    if (n == 0) return 1 % mod;
-    if (n % 2 == 1) return 1LL * bin_pow(x, n - 1, mod) * x % mod;
-    int t = bin_pow(x, n / 2, mod);
-    return t * t % mod;
-}
 
 void print() { }
 template<typename First, typename... Strings> void print(First arg, const Strings&... rest) { cout << arg << " "; print(rest...); }
@@ -80,9 +80,9 @@ int main() {
     fast_io;
 
     tests{
-        int
+        int n;
 
-        cin >>
+        cin >> n;
 
 
     };

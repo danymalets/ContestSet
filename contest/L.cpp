@@ -1,91 +1,181 @@
-#pragma region TEMPLATE
-
-#include <bits/stdc++.h>
+#include <iostream>
+#include <stdio.h>
+#include <vector>
+#include <stack>
+#include <queue>
+#include <deque>
+#include <map>
+#include <set>
+#include <bitset>
+#include <cmath>
+#include <cstdlib>
+#include <algorithm>
+#include <math.h>
+#include <random>
+#include <string>
+#include <iomanip>
+#include <unordered_map>
 using namespace std;
 
 typedef long long ll;
-typedef unsigned long long ull;
 typedef long double ld;
 
 #define fast_io ios_base::sync_with_stdio(0),cin.tie(0),cout.tie(0)
-#define erun(x) (x).erase(unique(all(x)),(x).end())
+#define erase_unique(x) (x).erase(unique(all(x)),(x).end())
 #define sp(x) setprecision(x) << fixed
-#define setp(x) cout << setprecision(x) << fixed
 #define all(x) (x).begin(),(x).end()
-#define dcl(x,y) ((x)%(y)?(x)/(y)+1:(x)/(y))
+#define dcl(x,y) (x%y?x/y+1:x/y)
 #define cube(x) ((x)*(x)*(x))
 #define sqr(x) ((x)*(x))
 #define bg1 cout << '!'
 #define bg2 cout << '?'
+#define ln cout << '\n'
 #define pb push_back
 #define mp make_pair
-#define fi first
-#define se second
 #define endl '\n'
-#define tests int _t; cin >> _t; while (_t--)
 #define file_all file_in,file_out
 #define file_in freopen("input.txt","rt",stdin)
 #define file_out freopen("output.txt","wt",stdout)
-#define print_time() cerr << sp(2) << "\nTime execute: " << clock() / (double)CLOCKS_PER_SEC << " sec\n";
 
-int gcd(int x, int y){ return __gcd(x, y); }
-int gcd(ll x, ll y){ return __gcd(x, y); }
-ll lcm(int x, int y){ return 1LL * x * y / gcd(x, y); }
-
-ld root(ld n, ld x){ return pow(x, 1 / n); }
-ld log(ld n, ld x){ return log(x) / log(n); }
-int pow2(int n){ return (1 << n); }
-ll pow2ll(int n){ return (1LL << n); }
-bool is_pow2(int x){ return !(x&(x-1)); }
-bool is_pow2(ll x){ return !(x&(x-1)); }
-bool is_sqr(int x){ int t = sqrt(x); return t * t == x; }
-bool is_sqr(ll x){ int t = sqrt(x); return 1LL * t * t == x; }
-
-int bin_pow(int x, int n, int mod){
-    if (n == 0) return 1 % mod;
-    if (n % 2 == 1) return 1LL * bin_pow(x, n - 1, mod) * x % mod;
-    int t = bin_pow(x, n / 2, mod);
-    return t * t % mod;
-}
-
-int bin_pow(int x, ll n, int mod){
-    if (n == 0) return 1 % mod;
-    if (n % 2 == 1) return 1LL * bin_pow(x, n - 1, mod) * x % mod;
-    int t = bin_pow(x, n / 2, mod);
-    return t * t % mod;
-}
-
-void print() { }
-template<typename First, typename... Strings> void print(First arg, const Strings&... rest) { cout << arg << " "; print(rest...); }
-void println() { cout << '\n'; }
-template<typename First, typename... Strings> void println(First arg, const Strings&... rest) { cout << arg << " "; println(rest...); }
-template<typename T> void printv(vector<T> v) { for (int i = 0; i < v.size(); i++) print(v[i]); }
-template<typename T> void printvln(vector<T> v) { printv(v); println(); }
-template<typename T> void printa(T a[], int l, int r) { for (int i = l; i < r; i++) print(a[i]); }
-template<typename T> void printaln(T a[], int l, int r) { printa(a, l, r); println(); }
-template<typename T> void printa(T a[], int n) { printa(a, 0, n); }
-template<typename T> void printaln(T a[], int n) { printaln(a, 0, n); }
-
-#pragma endregion TEMPLATE
 
 const ll LLINF = 8e18;
-const int INF = 2e9;
-
 const int MOD = 1e9+7;
-const int M = 1000;
-const int N = 2e5;
+const int INF = 2e9;
+const int N = 2;
+const long long M = 1e18;
 
 
-int main() {
-    fast_io;
+class Array{
+public:
+    int a[N];
 
-    tests{
-        int
+public:
+    Array(){
+        for (int i = 0; i < N; i++){
+            a[i] = 0;
+        }
+    }
 
-        cin >>
+    int& at(int i){
+        return a[i];
+    }
+
+    void set_val(int i, int val){
+        a[i] = val;
+    }
+
+    int get_val(int i){
+        return a[i];
+    }
+};
+
+class Matrix{
+public:
+    int a[N][N];
+
+public:
+    Matrix(){
+        for (int i = 0; i < N; i++){
+            for (int j = 0; j < N; j++){
+                a[i][j] = 0;
+            }
+        }
+    }
+
+    int& at(int i, int j){
+        return a[i][j];
+    }
+
+    void set_val(int cur, int pre, int val = 1){
+        at(cur, pre) = val;
+    }
+
+    static Matrix E(){
+        Matrix ans;
+        for (int i = 0; i < N; i++){
+            ans.at(i, i) = 1;
+        }
+        return ans;
+    }
+};
+
+Matrix mult(Matrix a, Matrix b){
+    Matrix ans;
+    for (int i = 0; i < N; i++){
+        for (int j = 0; j < N; j++){
+            for (int k = 0; k < N; k++){
+                ans.at(i, j) = (0LL + ans.at(i, j) + 1LL * a.at(i, k) * b.at(k, j)) % MOD;
+            }
+        }
+    }
+    return ans;
+}
+
+Array mult(Matrix mt, Array a){
+    Array ans;
+    for (int i = 0; i < N; i++){
+        for (int k = 0; k < N; k++){
+            ans.at(i) = (0LL + ans.at(i) + 1LL * a.at(k) * mt.at(i, k)) % MOD;
+        }
+    }
+    return ans;
+}
+
+Matrix bin_pow(Matrix mt, long long n){
+    Matrix ans = Matrix::E();
+    vector<bool> vb;
+    while(n > 0){
+        if (n % 2 == 1){
+            vb.push_back(true);
+            n--;
+        }
+        else{
+            vb.push_back(false);
+            n /= 2;
+        }
+    }
+    reverse(vb.begin(), vb.end());
+    for (bool b: vb){
+        if (b) ans = mult(ans, mt);
+        else ans = mult(ans, ans);
+    }
+    return ans;
+}
+
+Array solve(Array a, Matrix mt, long long n){
+    Matrix ans = bin_pow(mt, n);
+    return mult(ans, a);
+}
 
 
-    };
+class A{
+public:
+    int a[2][2];
+};
+
+int main(){
+    Array a;
+    a.set_val(0, 0);
+    a.set_val(1, 1);
+
+    Matrix mt;
+    mt.set_val(0, 1);
+    mt.set_val(1, 1);
+    mt.set_val(1, 0);
+
+    long long n;
+    cin >> n;
+    if (n >= 0){
+        cout << solve(a, mt, n+1).get_val(0);
+    }
+    else{
+        n = -n;
+        if (n % 2 == 0){
+            cout << (-solve(a, mt, n).get_val(0) + MOD) % MOD;
+        }else{
+            cout << solve(a, mt, n).get_val(0);
+        }
+    }
 
     return 0;
 }

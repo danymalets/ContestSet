@@ -41,17 +41,16 @@ typedef long double ld;
 const ll LLINF = 8e18;
 const int MOD = 1e9;
 const int INF = 2e9;
-const int N = 2;
+const int MSIZE = 2;
 const long long M = 1e18;
-
 
 class Array{
 public:
-    int a[N];
+    int a[MSIZE];
 
 public:
     Array(){
-        for (int i = 0; i < N; i++){
+        for (int i = 0; i < MSIZE; i++){
             a[i] = 0;
         }
     }
@@ -71,12 +70,12 @@ public:
 
 class Matrix{
 public:
-    int a[N][N];
+    int a[MSIZE][MSIZE];
 
 public:
     Matrix(){
-        for (int i = 0; i < N; i++){
-            for (int j = 0; j < N; j++){
+        for (int i = 0; i < MSIZE; i++){
+            for (int j = 0; j < MSIZE; j++){
                 a[i][j] = 0;
             }
         }
@@ -92,7 +91,7 @@ public:
 
     static Matrix E(){
         Matrix ans;
-        for (int i = 0; i < N; i++){
+        for (int i = 0; i < MSIZE; i++){
             ans.at(i, i) = 1;
         }
         return ans;
@@ -101,9 +100,9 @@ public:
 
 Matrix mult(Matrix a, Matrix b){
     Matrix ans;
-    for (int i = 0; i < N; i++){
-        for (int j = 0; j < N; j++){
-            for (int k = 0; k < N; k++){
+    for (int i = 0; i < MSIZE; i++){
+        for (int j = 0; j < MSIZE; j++){
+            for (int k = 0; k < MSIZE; k++){
                 ans.at(i, j) = (0LL + ans.at(i, j) + 1LL * a.at(i, k) * b.at(k, j)) % MOD;
             }
         }
@@ -113,8 +112,8 @@ Matrix mult(Matrix a, Matrix b){
 
 Array mult(Matrix mt, Array a){
     Array ans;
-    for (int i = 0; i < N; i++){
-        for (int k = 0; k < N; k++){
+    for (int i = 0; i < MSIZE; i++){
+        for (int k = 0; k < MSIZE; k++){
             ans.at(i) = (0LL + ans.at(i) + 1LL * a.at(k) * mt.at(i, k)) % MOD;
         }
     }
@@ -147,12 +146,6 @@ Array solve(Array a, Matrix mt, long long n){
     return mult(ans, a);
 }
 
-
-class A{
-public:
-    int a[2][2];
-};
-
 int main(){
     Array a;
     a.set_val(0, 0);
@@ -165,7 +158,6 @@ int main(){
 
     long long n;
     cin >> n;
-    if (n >= 0){
         cout << solve(a, mt, n).get_val(0);
     }
     else{

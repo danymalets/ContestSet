@@ -292,14 +292,6 @@ struct bigint {
         return stream;
     }
 
-    friend ostream& operator<<(ostream &stream, const bigint &v) {
-        if (v.sign == -1)
-            stream << '-';
-        stream << (v.z.empty() ? 0 : v.z.back());
-        for (int i = (int) v.z.size() - 2; i >= 0; --i)
-            stream << setw(base_digits) << setfill('0') << v.z[i];
-        return stream;
-    }
 
     static vector<int> convert_base(const vector<int> &a, int old_digits, int new_digits) {
         vector<long long> p(max(old_digits, new_digits) + 1);
@@ -392,5 +384,8 @@ struct bigint {
 
 int main()
 {
+    bigint t = 9;
+    t= 5-t;
+
     return 0;
 }

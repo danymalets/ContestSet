@@ -1,6 +1,5 @@
 #pragma region TEMPLATE
 
-
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -23,25 +22,10 @@ typedef long double ld;
 #define fi first
 #define se second
 #define endl '\n'
-#define tests int _t; cin >> _t; while (_t--)
 #define file_all file_in,file_out
 #define file_in freopen("input.txt","rt",stdin)
 #define file_out freopen("output.txt","wt",stdout)
 #define print_time() cerr << sp(2) << "\nTime execute: " << clock() / (double)CLOCKS_PER_SEC << " sec\n";
-
-vector<string> split(string s, string t){
-    vector<string> ans;
-    auto start = 0U;
-    auto end = s.find(t);
-    while (end != string::npos)
-    {
-        ans.pb(s.substr(start, end - start));
-        start = end + t.length();
-        end = s.find(t, start);
-    }
-    ans.pb(s.substr(start, end));
-    return ans;
-}
 
 int gcd(int x, int y){ return __gcd(x, y); }
 int gcd(ll x, ll y){ return __gcd(x, y); }
@@ -50,11 +34,25 @@ ll lcm(int x, int y){ return 1LL * x * y / gcd(x, y); }
 ld root(ld n, ld x){ return pow(x, 1 / n); }
 ld log(ld n, ld x){ return log(x) / log(n); }
 int pow2(int n){ return (1 << n); }
-ll pow2l(int n){ return (1LL << n); }
+ll pow2ll(int n){ return (1LL << n); }
 bool is_pow2(int x){ return !(x&(x-1)); }
 bool is_pow2(ll x){ return !(x&(x-1)); }
 bool is_sqr(int x){ int t = sqrt(x); return t * t == x; }
 bool is_sqr(ll x){ int t = sqrt(x); return 1LL * t * t == x; }
+
+int bin_pow(int x, int n, int mod){
+    if (n == 0) return 1 % mod;
+    if (n % 2 == 1) return 1LL * bin_pow(x, n - 1, mod) * x % mod;
+    int t = bin_pow(x, n / 2, mod);
+    return t * t % mod;
+}
+
+int bin_pow(int x, ll n, int mod){
+    if (n == 0) return 1 % mod;
+    if (n % 2 == 1) return 1LL * bin_pow(x, n - 1, mod) * x % mod;
+    int t = bin_pow(x, n / 2, mod);
+    return t * t % mod;
+}
 
 void print() { }
 template<typename First, typename... Strings> void print(First arg, const Strings&... rest) { cout << arg << " "; print(rest...); }
@@ -76,57 +74,55 @@ const int MOD = 1e9+7;
 const int M = 1000;
 const int N = 2e5;
 
-int n;
-int a[10], k[10];
-vector<vector<int>> v;
-vector<int> t;
+const ld EPS = 1e-10;
 
-void rec(int i = 0){
-    for (int j = 0; j < a[i]; j++){
-        int val = (k[i] + j) % a[i];
-        k[j] = val;
-        rec(i+1);
-    }
-    if (i == n){
-        v.pb(t);
-    }
-}
+struct fract0{
+    int a, b;
 
-pair<int, char> get(vector<int> a, vector<int> b){
-    for (int i = 0; i < a.size(); i++){
-        if (a[i] + 1 == b[i])
-            return {i,'+'};
-        if (a[i] - 1 == b[i])
-            return {i,'-'};
+    fract0() : a(0), b(1) {}
+    fract0(int a) : a(a), b(1) {}
+    fract0(int a, int b) : a(a), b(b) {}
+
+    friend istream& operator>>(istream &stream, fract0 &s) { return stream >> s.a >> s.b; }
+    friend ostream& operator<<(ostream &stream, const fract0 &s) {
+        return stream << "( " << s.a << " / " << s.b << " )";
     }
-    print("bad");
-    return {0,'?'};
-}
+
+    void simplify(){
+        int t = __gcd(a, b);
+        a /= t;
+        b /= t;
+    }
+
+    fract0 operator+(const fract0 &f) const { return fract0(a * f.b + b * f.a, b * f.b); }
+    fract0 operator-(const fract0 &f) const { return fract0(a * f.b - b * f.a, b * f.b); }
+    fract0 operator*(const fract0 &f) const { return fract0(a * f.a, b * f.b); }
+    fract0 operator/(const fract0 &f) const { return (*this) * f.reverse(); }
+    fract0 operator-() const { return fract0(-a, b); }
+
+    fract0 reverse() const { return fract0(b, a); }
+
+    ld get_double() { return (ld)a / b; }
+
+    void operator+=(const fract0 &f) { *this = *this + f; }
+    void operator-=(const fract0 &f) { *this = *this - f; }
+    void operator*=(const fract0 &f) { *this = *this * f; }
+    void operator/=(const fract0 &f) { *this = *this / f; }
+
+    bool operator==(const fract0 &f) const { return 1LL * a * f.b == 1LL * b * f.a; }
+    bool operator!=(const fract0 &f) const { return !((*this) == f); }
+    bool operator<(const fract0 &f) const { return 1LL * a * f.b < 1LL * b * f.a; }
+    bool operator>(const fract0 &f) const { return 1LL * a * f.b > 1LL * b * f.a; }
+    bool operator<=(const fract0 &f) const { return !((*this) > f); }
+    bool operator>=(const fract0 &f) const { return !((*this) < f); }
+};
+
 
 int main() {
-    fast_io;
+    fast_io; setp(8);
 
-    cin >> n;
-
-
-    for (int i = 0; i < n; i++){
-        cin >> a[i];
-        t.pb(0);
-    }
-
-    for (int i = 0; i < n; i++){
-        int tmp;
-        cin >> tmp;
-        tmp--;
-        t.pb(tmp);
-    }
-
-    rec();
-    v.pb(v[0]);
-    for (int i = 0; i < v.size() - 1; i++){
-        auto tmp = get(v[i], v[i+1]);
-        cout << tmp.first + 1 << tmp.second << endl;
-    }
+    fract0 a = 4, b = 5;
+    cout << a / b;
 
 
     return 0;
